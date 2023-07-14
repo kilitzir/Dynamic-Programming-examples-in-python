@@ -35,8 +35,7 @@ const canSum1 = (targetSum,numbers, sorted = false) =>
         numbers = numbers.sort(function(a, b){return a-b});
         console.log(numbers);
      }
-    if (targetSum < numbers[0])
-        return false;
+    
     for (let num of numbers)
     {
         const remainder = targetSum - num;
