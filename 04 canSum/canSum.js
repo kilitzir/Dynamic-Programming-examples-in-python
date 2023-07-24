@@ -46,14 +46,64 @@ const canSum1 = (targetSum,numbers, sorted = false) =>
     }
     return false;
 };
+const canSumMemo = (targetSum,numbers,memo={}) => 
+{
+    //console.log("targetsum: " + targetSum);
+    if (targetSum in memo)
+        return memo[targetSum];
+    if (targetSum == 0 ) 
+        return true;
+    if (targetSum < 0 )
+        return false;
+    for (let num of numbers)
+    {
+        const remainder = targetSum - num;
+        if (canSum(remainder,numbers,memo) == true)
+        {
+            memo[remainder] = true;
+            return true;
+        }
+    }
+    memo[targetSum] = false;
+    return false;
+};
+const canSumTab =  (targetSum,numbers) =>
+{
+    const table = Array(targetSum+1).fill(false);
+    table[0] =  true;
+    for (let i=0;i<=targetSum;i++)
+    {
+        if (!table[i]) continue;
+
+        for (let num of numbers)
+        {
+            if (i+num<= targetSum)
+                table[i+num] = true;
+
+        }
+    }
+    return table[targetSum];
+};
+
+let r = 300
+let rr = [7,14]
 let start = Date.now();
-
-console.log (canSum(250, [7,14,9,26]));
-
+console.log ("canSum: "+canSum(r, rr));
 let end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
- start = Date.now();
- console.log (canSum1(250, [13, 19, 27]));
 
+ start = Date.now();
+ console.log ("canSum1: "+canSum1(r, rr));
  end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
+
+start = Date.now();
+ console.log ("canSummemo: "+canSumMemo(r, rr));
+ end = Date.now();
+console.log(`Execution time: ${end - start} ms`);
+
+start = Date.now();
+console.log ("canSumTab: "+ canSumTab(r, rr));
+end = Date.now();
+console.log(`Execution time: ${end - start} ms`);
+

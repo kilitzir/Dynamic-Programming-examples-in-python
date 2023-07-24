@@ -75,22 +75,52 @@ const bestSumOriginal2 =  (targetSum, numbers,CurrentMinimumDepth, currentDepth)
     }
     return shortestCombination;
 }
+const bestSumMemoize =  (targetSum, numbers,memo = {})=>
+{
+    if (targetSum in memo) return memo[targetSum];
+    if (targetSum === 0 )   return [];
+    if (targetSum <1)      return null;
+
+    let shortestCombination = null;
+    for ( let num of numbers)
+    {
+        const remainder = targetSum - num;
+        const remainderCombination = bestSumMemoize(remainder,numbers,memo)
+        if (remainderCombination !== null)
+        {
+            const combination = [...remainderCombination, num];
+            if (shortestCombination  === null || combination.length < shortestCombination.length)
+            {
+                shortestCombination =  combination;
+            }
+        }
+    }
+
+    memo[targetSum] = shortestCombination;
+    return shortestCombination;
+}
+
 //-------------------------------------------
-const rr = 40;
+const rr = 1000;
 const rrr =  [1,25,5,2];
 console.log("let's start")
 let start = Date.now();
-console.log ("bestSumOriginal: "+bestSumOriginal(rr,rrr));
+//console.log ("bestSumOriginal: "+bestSumOriginal(rr,rrr));
 let end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
-
+console.log("---------------");
 start = Date.now();
-console.log ("bestSumOriginal1: "+bestSumOriginal1(rr,rrr,isSorted = false));
+//console.log ("bestSumOriginal1: "+bestSumOriginal1(rr,rrr,isSorted = false));
 end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
-
+console.log("---------------");
 start = Date.now();
 console.log ("bestSumOriginal2: "+bestSumOriginal2(rr,rrr,1000,0));
 end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
-
+console.log("---------------");
+start = Date.now();
+console.log ("bestSumMemoize: "+bestSumMemoize(rr,rrr));
+end = Date.now();
+console.log(`Execution time: ${end - start} ms`);
+console.log("---------------");
