@@ -1,5 +1,5 @@
 // Write a function 'bestSum( targetSum, numbers) that takes in a targetSum and an array of numbers as arguments
-// the function should return an array containg the shortest combination if numbers 
+// the function should return an array containg the shortest combination of numbers 
 // that add up to exactly the targetSum
 // if there's a tie, you may return any one of the shortest
 
@@ -99,28 +99,49 @@ const bestSumMemoize =  (targetSum, numbers,memo = {})=>
     memo[targetSum] = shortestCombination;
     return shortestCombination;
 }
-
+const bestSumTab =  (targetSum, numbers)=>
+{
+    const table = Array(targetSum+1).fill(null);
+    table[0] = [];
+    for (i=0;i<=targetSum; i++)
+    {
+        if (table[i] === null) continue;
+        for ( let num of numbers)
+        {
+            let c = [...table[i],num];
+            if ((!table[i+num]) || c.length<table[i+num]) // also checks the undefined (i+num>targetSum)
+                table[i+num] = c;
+        }
+    }
+    return JSON.stringify(table[targetSum]) + "length:"+table[targetSum].length;
+}
 //-------------------------------------------
 const rr = 1000;
-const rrr =  [1,25,5,2];
+const rrr =  [1,25,5,2,33];
 console.log("let's start")
 let start = Date.now();
-//console.log ("bestSumOriginal: "+bestSumOriginal(rr,rrr));
+//console.log ("bestSumOriginal: "+ stringifybestSumOriginal(rr,rrr)));
 let end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
 console.log("---------------");
 start = Date.now();
-//console.log ("bestSumOriginal1: "+bestSumOriginal1(rr,rrr,isSorted = false));
+//console.log ("bestSumOriginal1: "+stringify(bestSumOriginal1(rr,rrr,isSorted = false)));
 end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
 console.log("---------------");
 start = Date.now();
-console.log ("bestSumOriginal2: "+bestSumOriginal2(rr,rrr,1000,0));
+//console.log ("bestSumOriginal2: "+JSON.stringify(bestSumOriginal2(rr,rrr,1000,0)));
 end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
 console.log("---------------");
 start = Date.now();
-console.log ("bestSumMemoize: "+bestSumMemoize(rr,rrr));
+const ss = bestSumMemoize(rr,rrr)
+console.log ("bestSumMemoize: "+ JSON.stringify(ss) + "length: "+ss.length);
 end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
+start = Date.now();
+console.log ("bestSumTab: "+ JSON.stringify(bestSumTab(rr,rrr)));
+end = Date.now();
+console.log(`Execution time: ${end - start} ms`);
+
 console.log("---------------");
