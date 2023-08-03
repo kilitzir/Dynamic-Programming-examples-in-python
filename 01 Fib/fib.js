@@ -44,7 +44,7 @@ return z;
 }
 
 let start, end
-let r = 100
+let r = 10
 
 start = Date.now();
 console.log ("fibOriginal: "+fibOriginal(r));

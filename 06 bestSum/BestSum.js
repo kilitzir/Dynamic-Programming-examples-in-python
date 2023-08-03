@@ -108,8 +108,8 @@ const bestSumTab =  (targetSum, numbers)=>
         if (table[i] === null) continue;
         for ( let num of numbers)
         {
-            let c = [...table[i],num];
-            if ((!table[i+num]) || c.length<table[i+num]) // also checks the undefined (i+num>targetSum)
+            const c = [...table[i],num]; // temp combination
+            if ((!table[i+num]) || c.length < table[i+num].length) // also checks the undefined (i+num>targetSum)
                 table[i+num] = c;
         }
     }
@@ -117,7 +117,7 @@ const bestSumTab =  (targetSum, numbers)=>
 }
 //-------------------------------------------
 const rr = 1000;
-const rrr =  [1,25,5,2,33];
+const rrr =  [33,25,5,2,51];
 console.log("let's start")
 let start = Date.now();
 //console.log ("bestSumOriginal: "+ stringifybestSumOriginal(rr,rrr)));

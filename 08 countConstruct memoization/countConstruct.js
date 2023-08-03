@@ -35,6 +35,22 @@ const countConstructMemoized = (target, wordBank, memo={}) =>
     memo[target] = sum;
     return sum;
 };
+const countConstructTab = (target, wordBank) =>
+{
+    const table = Array(target.length+1).fill(0); 
+    table[0] = 1;
+    for (i=0; i<=target.length; i++)
+    {
+        if (table[i] == 0) continue;
+        const target1 = target.slice(i);
+        for (let word of wordBank)
+        {
+            if (target1.startsWith(word))
+                table[i+word.length]  += table[i];
+        }
+    }
+    return table[target.length];
+}
 
 
 
@@ -53,6 +69,12 @@ console.log(" --- original --- ")
 start = Date.now();
 
 console.log ("countConstructMemoized: " + countConstructMemoized(rr,rrr));
+end = Date.now();
+
+console.log(`Execution time: ${end - start} ms`);
+start = Date.now();
+
+console.log ("countConstructTab: " + countConstructTab(rr,rrr));
 end = Date.now();
 
 console.log(`Execution time: ${end - start} ms`);

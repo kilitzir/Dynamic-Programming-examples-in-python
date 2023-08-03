@@ -43,17 +43,39 @@ const allConstructMemoized = (target, wordBank,memo={}) =>
     memo[target] = result;
     return result;
 };
-const rr = "purple";
+const allConstructTab = (target, wordBank) =>
+{
+    const table = Array(target.length+1).fill().map(() =>[])// a table of arrays
+    table[0] = [[]];
+    for ( let i = 0; i<target.length; i++)
+    {
+        for (let word of wordBank)
+        {
+            if (target.slice(i,i + word.length) == word) {
+                const combinations1 = table[i].map(subArray => [...subArray,word])
+                table[i+word.length].push(...combinations1) 
+            }
+
+        }
+    }
+    return table[target.length];
+}
+
+let rr = "purple";
 const rrr =  ['purp','p','ur','le','purpl'];
 let start, end;
 console.log("let's start")
 console.log(" --- original --- ")
 start = Date.now();
-console.log("canConstruct: " + JSON.stringify(allConstructOriginal(rr, rrr)));
+console.log("canConstruct original: " + JSON.stringify(allConstructOriginal(rr, rrr)));
 end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
 console.log(" --- memoized --- ")
 start = Date.now();
-console.log("canConstruct: " + JSON.stringify(allConstructMemoized(rr, rrr)));
+console.log("canConstruct memoized: " + JSON.stringify(allConstructMemoized(rr, rrr)));
+end = Date.now();
+console.log(`Execution time: ${end - start} ms`);
+start = Date.now();
+console.log("canConstructTab: " + JSON.stringify(allConstructTab(rr, rrr)));
 end = Date.now();
 console.log(`Execution time: ${end - start} ms`);
